@@ -20,6 +20,7 @@ void selection_sort(int *array, size_t size)
 				ls = c;
 				sw = 1;
 			}
+		}
 		if (sw == 1)
 		{
 			h = array[ls];
@@ -27,7 +28,6 @@ void selection_sort(int *array, size_t size)
 			array[i] = h;
 			print_array(array, size);
 			sw = 0;
-		}
 		}
 	}
 }
