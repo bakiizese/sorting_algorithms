@@ -1,64 +1,40 @@
 #include "sort.h"
-/**
- * part - entry partition
- * @array: array
- * @bg: var
- * @fn: var
- * @size: var
- * Return: k + 1
- */
-int part(int *array, int bg, int fn, size_t size)
+void swap(int *x, int *y, int size, int array[])
 {
-	int k = bg - 1;
-	int hol, j;
-
-	for (j = bg; j <= fn - 1; j++)
-	{
-		if (array[j] < array[fn])
-		{
-			k++;
-			if (k < j)
-			{
-				hol = array[k];
-				array[k] = array[j];
-				array[j] = hol;
-				print_array(array, size);
-			}
-		}
-	}
-	if (array[k + 1] > array[fn])
-	{
-		hol = array[k + 1];
-		array[k + 1] = array[fn];
-		array[fn] = hol;
-		print_array(array, size);
-	}
-	return (k + 1);
+    int tm = *x;
+    *x = *y;
+    *y = tm;
+    print_array(array, size);
 }
-/**
- * recurse - entry
- * @array: array
- * @bg: var
- * @fn: var
- * @size: var
- */
-void recurse(int *array, int bg, int fn, size_t size)
+
+int partition(int array[], int low, int high, int size)
 {
-	int piv;
+    int piv_value = array[high];
+    int i = low;
+    int j;
 
-	if (bg < fn)
-	{
-		piv = part(array, bg, fn, size);
-		recurse(array, bg, piv - 1, size);
-		recurse(array, piv + 1, fn, size);
-	}
+    for (j = low; j < high; j++)
+    {
+        if (array[j] <= piv_value)
+        {
+            swap(&array[i], &array[j], size, array);
+            i++;
+        }
+    }
+    swap(&array[i], &array[high], size, array);
+    return i;
 }
-/**
- * quick_sort - entry
- * @array: array
- * @size: var
- */
+
+void recurse(int array[], int low, int high, int size)
+{
+    if (low < high)
+    {
+        int piv_point = partition(array, low, high, size);
+        recurse(array, low, piv_point - 1, size);
+        recurse(array, piv_point + 1, high, size);
+    }
+}
 void quick_sort(int *array, size_t size)
 {
-	recurse(array, 0, size - 1, size);
+    recurse(array, 0, size - 1, size);
 }
