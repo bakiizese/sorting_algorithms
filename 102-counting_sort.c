@@ -29,10 +29,10 @@ void counting_sort(int *array, size_t size)
 	int max, num, *narr, *sarr;
 	size_t i;
 
-	max = maxs(array, size);
-
 	if (!array || size < 2)
 		return;
+
+	max = maxs(array, size);
 	sarr = malloc(sizeof(int) * size);
 	narr = malloc(sizeof(size_t) * (max + 1));
 
