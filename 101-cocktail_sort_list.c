@@ -35,7 +35,8 @@ void cocktail_sort_list(listint_t **list)
 
 	if (!list || !(*list) || !(*list)->next)
 		return;
-	do {
+	while (fs != ls)
+	{
 		while (ck->next)
 		{
 			if (ck->n > ck->next->n)
@@ -52,5 +53,5 @@ void cocktail_sort_list(listint_t **list)
 				ck = ck->prev;
 		}
 		fs = ck;
-	} while (fs != ls);
+	}
 }
