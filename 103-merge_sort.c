@@ -38,28 +38,26 @@ void print_left_right(int *array, int size, int first, int mid)
 }
 
 /**
- * merge - merge the values in the position of array
- * @array: first array
- * @size: size of second array
- * @cpy: copy of array
- * @first: initial position
- * @mid: middle position
- * first one of the second array
+ * merge - position of array
+ * @array: var
+ * @size: var
+ * @cpy: var
+ * @fs: initial position
+ * @md: var
  */
-void merge(int *array, int size, int first, int mid, int *cpy)
+void merge(int *array, int size, int fs, int md, int *cpy)
 {
 	int i, j, k;
 
-	print_left_right(array, size, first, mid);
+	print_left_right(array, size, fs, md);
 
-	i = first;
-	j = mid;
+	i = fs;
+	j = md;
 
 	printf("[Done]: ");
-	k = first;
-	while (k < size)
+	for (k = fs; k < size; k++)
 	{
-		if (i < mid && (j >= size || array[i] <= array[j]))
+		if (i < md && (j >= size || array[i] <= array[j]))
 		{
 			cpy[k] = array[i];
 			i++;
@@ -73,48 +71,50 @@ void merge(int *array, int size, int first, int mid, int *cpy)
 			printf("%d, ", cpy[k]);
 		else
 			printf("%d\n", cpy[k]);
-		k++;
 	}
 }
 /**
- * mergeSort - array separator
- * @cpy: copy of array
- * @first: initial position
- * @size: size of the original  array
- * @array: the original array
+ * mergesort - array separator
+ * @cpy: var
+ * @fs: var
+ * @size: var
+ * @array: var
  */
-void mergeSort(int *cpy, int first, int size, int *array)
+void mergesort(int *cpy, int fs, int size, int *array)
 {
-	int mid;
+	int md;
 
-	if (size - first < 2)
+	if (size - fs < 2)
 		return;
 
-	mid = (size + first) / 2;
+	md = (size + fs) / 2;
 
-	mergeSort(array, first, mid, cpy);
-	mergeSort(array, mid, size, cpy);
+	mergesort(array, fs, md, cpy);
+	mergesort(array, md, size, cpy);
 
-	merge(cpy, size, first, mid, array);
+	merge(cpy, size, fs, md, array);
 }
 /**
- * copy_array - copy array of int
- * @arr: array src
- * @cpy: array dest
- * @size : array size
+ * cp_array - entry
+ * @arr: var
+ * @cpy: var
+ * @size : var
  */
-void copy_array(int *arr, int *cpy, int size)
+void cp_array(int *arr, int *cpy, int size)
 {
-	int i;
+	int i = 0;
 
-	for (i = 0; i < (int)size; i++)
-		cpy[i] = arr[i];
+       while (i < (int)size)
+       {
+	       cpy[i] = arr[i];
+	       i++;
+       }
 }
 
 /**
  * merge_sort - create partition and copy
- * @array: array
- * @size : array size
+ * @array: var
+ * @size : var
  */
 void merge_sort(int *array, size_t size)
 {
@@ -125,8 +125,8 @@ void merge_sort(int *array, size_t size)
 	if (cpy == NULL)
 		return;
 
-	copy_array(array, cpy, size);
+	cp_array(array, cpy, size);
 
-	mergeSort(cpy, 0, size, array);
+	mergesort(cpy, 0, size, array);
 	free(cpy);
 }
