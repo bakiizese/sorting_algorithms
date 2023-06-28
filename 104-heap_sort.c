@@ -43,14 +43,16 @@ void heap_sort(int *array, size_t size)
 	if (array == NULL || size < 2)
 		return;
 
-	for (gap = (size - 2) / 2; 1; gap--)
+	gap = (size - 2) / 2;
+	while (1)
 	{
 		swap(array, gap, size - 1, size);
 		if (gap == 0)
 			break;
+		gap--;
 	}
 	rh = size - 1;
-	while (hi > 0)
+	while (rh > 0)
 	{
 		mp = array[rh];
 		array[rh] = array[0];
