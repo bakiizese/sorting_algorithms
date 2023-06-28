@@ -1,89 +1,132 @@
 #include "sort.h"
-void merge_recurs(size_t lt, size_t rt, int *array, int *bs);
-/**
- * merge_sort - entry
- * @array: var
- * @size: var
- */
-void merge_sort(int *array, size_t size)
-{
-	size_t i = 0;
-	int *bs = NULL;
+#include <stdlib.h>
+#include <stdio.h>
 
-	if (size < 2 || array == NULL)
-		return;
-	bs = malloc(sizeof(int) * size);
-	if (bs == NULL)
-		return;
-	while (i < size)
-	{
-		bs[i] = array[i];
-		i++;
-	}
-	merge_recurs(0, size, array, bs);
-	free(bs);
-}
 /**
- * merge - entry
- * @lt: var
- * @md: var
- * @rt: var
- * @dest: var
- * @src: var
+ * print_left_right - print left and right partitions
+ * @array: array
+ * @size: size of second array
+ * @first: initial position
+ * @mid: middle position
  */
-void merge(size_t lt, size_t md, size_t rt, int *dest, int *src)
+void print_left_right(int *array, int size, int first, int mid)
 {
-	size_t i = 0;
-	size_t j = 0, k = 0;
+	int k;
 
-	printf("Mergign...\n");
+	printf("Merging...\n");
 	printf("[left]: ");
-	print_array(src + lt, md - lt);
-	printf("[right]: ");
-	print_array(src + md, rt - md);
-
-	j = md;
-	i = lt;
-	k = lt;
-
-	for (; k < rt; k++)
+	k = first;
+	while (k < mid)
 	{
-		if (i < md && (j >= rt || src[i] <= src[j]))
+		if (k != mid - 1)
+			printf("%d, ", array[k]);
+		else
+			printf("%d\n", array[k]);
+		k++;
+	}
+
+	printf("[right]: ");
+	k = mid;
+	while (k < size)
+	{
+		if (k < size - 1)
+			printf("%d, ", array[k]);
+		else
+			printf("%d\n", array[k]);
+		k++;
+	}
+}
+
+/**
+ * merge - merge the values in the position of array
+ * @array: first array
+ * @size: size of second array
+ * @cpy: copy of array
+ * @first: initial position
+ * @mid: middle position
+ * first one of the second array
+ */
+void merge(int *array, int size, int first, int mid, int *cpy)
+{
+	int i, j, k;
+
+	print_left_right(array, size, first, mid);
+
+	i = first;
+	j = mid;
+
+	printf("[Done]: ");
+	k = first;
+	while (k < size)
+	{
+		if (i < mid && (j >= size || array[i] <= array[j]))
 		{
-			dest[k] = src[i];
+			cpy[k] = array[i];
 			i++;
 		}
 		else
 		{
-			dest[k] = src[j];
+			cpy[k] = array[j];
 			j++;
 		}
+		if (k < size - 1)
+			printf("%d, ", cpy[k]);
+		else
+			printf("%d\n", cpy[k]);
+		k++;
 	}
-	printf("[Done]: ");
-	print_array(dest + lt, rt - lt);
 }
 /**
- * merge_recurs - entry
- * @lt: var
- * @rt: var
- * @array: var
- * @bs: var
+ * mergeSort - array separator
+ * @cpy: copy of array
+ * @first: initial position
+ * @size: size of the original  array
+ * @array: the original array
  */
-void merge_recurs(size_t lt, size_t rt, int *array, int *bs)
+void mergeSort(int *cpy, int first, int size, int *array)
 {
-	size_t md = 0;
+	int mid;
 
-	if (rt - lt < 2)
+	if (size - first < 2)
 		return;
-	md = (lt + rt) / 2;
-	merge_recurs(lt, md, array, bs);
-	merge_recurs(md, rt, array, bs);
-	merge(lt, md, rt, array, bs);
 
-	md = lt;
-	while (md < rt)
-	{
-		bs[md] = array[md];
-		md++;
-	}
+	mid = (size + first) / 2;
+
+	mergeSort(array, first, mid, cpy);
+	mergeSort(array, mid, size, cpy);
+
+	merge(cpy, size, first, mid, array);
+}
+/**
+ * copy_array - copy array of int
+ * @arr: array src
+ * @cpy: array dest
+ * @size : array size
+ */
+void copy_array(int *arr, int *cpy, int size)
+{
+	int i;
+
+	for (i = 0; i < (int)size; i++)
+		cpy[i] = arr[i];
+}
+
+/**
+ * merge_sort - create partition and copy
+ * @array: array
+ * @size : array size
+ */
+void merge_sort(int *array, size_t size)
+{
+	int *cpy;
+
+	cpy = malloc(sizeof(int) * size - 1);
+
+	if (cpy == NULL)
+		return;
+
+	copy_array(array, cpy, size);
+
+	mergeSort(cpy, 0, size, array);
+	free(cpy);
 }
