@@ -104,13 +104,12 @@ void cp_array(int *arr, int *cpy, int size)
 {
 	int i = 0;
 
-       while (i < (int)size)
-       {
-	       cpy[i] = arr[i];
-	       i++;
-       }
+	while (i < (int)size)
+	{
+		cpy[i] = arr[i];
+		i++;
+	}
 }
-
 /**
  * merge_sort - create partition and copy
  * @array: var
